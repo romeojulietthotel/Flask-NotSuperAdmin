@@ -21,9 +21,9 @@ class Model(object):
 
 
 class Form(wtf.Form):
-    col1 = wtforms.TextField()
-    col2 = wtforms.TextField()
-    col3 = wtforms.TextField()
+    col1 = wtforms.StringField()
+    col2 = wtforms.StringField()
+    col3 = wtforms.StringField()
 
 
 class MockModelView(base.BaseModelAdmin):

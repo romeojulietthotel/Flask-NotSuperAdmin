@@ -76,8 +76,8 @@ def test_model():
     # Verify form
     with app.test_request_context():
         Form = view.get_form()
-        ok_(isinstance(Form()._fields['test1'], wtforms.TextField))
-        ok_(isinstance(Form()._fields['test2'], wtforms.TextField))
+        ok_(isinstance(Form()._fields['test1'], wtforms.StringField))
+        ok_(isinstance(Form()._fields['test2'], wtforms.StringField))
         ok_(isinstance(Form()._fields['test3'], wtforms.TextAreaField))
         ok_(isinstance(Form()._fields['test4'], wtforms.TextAreaField))
 

@@ -3,7 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 
 from flask.ext import superadmin, login, wtf
 from flask_superadmin.contrib import sqlamodel
-from wtforms.fields import TextField, PasswordField
+from wtforms.fields import StringField, PasswordField
 from wtforms.validators import Required, ValidationError
 
 # Create application
@@ -46,7 +46,7 @@ class User(db.Model):
 
 # Define login and registration forms (for flask-login)
 class LoginForm(wtf.Form):
-    login = TextField(validators=[Required()])
+    login = StringField(validators=[Required()])
     password = PasswordField(validators=[Required()])
 
     def validate_login(self, field):
@@ -63,8 +63,8 @@ class LoginForm(wtf.Form):
 
 
 class RegistrationForm(wtf.Form):
-    login = TextField(validators=[Required()])
-    email = TextField()
+    login = StringField(validators=[Required()])
+    email = StringField()
     password = PasswordField(validators=[Required()])
 
     def validate_login(self, field):
