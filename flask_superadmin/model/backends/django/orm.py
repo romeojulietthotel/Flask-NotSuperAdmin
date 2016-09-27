@@ -5,7 +5,7 @@ Tools for generating forms based on Django Model schemas.
 from wtforms import fields as f
 from wtforms import Form
 from wtforms import validators
-from wtforms.ext.django.fields import ModelSelectField
+from wtforms_django.fields import ModelSelectField
 
 from flask_superadmin import form
 
@@ -61,7 +61,7 @@ class AdminModelConverter(ModelConverterBase):
         converters = {}
         if simple_conversions is None:
             simple_conversions = self.DEFAULT_SIMPLE_CONVERSIONS
-        for field_type, django_fields in simple_conversions.iteritems():
+        for field_type, django_fields in simple_conversions.items():
             converter = self.make_simple_converter(field_type)
             for name in django_fields:
                 converters[name] = converter
@@ -170,7 +170,7 @@ def model_form(model, base_class=Form, fields=None, readonly_fields=None,
     """
     Create a wtforms Form for a given Django model class::
 
-        from wtforms.ext.django.orm import model_form
+        from wtforms_django.orm import model_form
         from myproject.myapp.models import User
         UserForm = model_form(User)
 
