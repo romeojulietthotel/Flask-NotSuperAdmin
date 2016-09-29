@@ -1,4 +1,4 @@
-from nose.tools import ok_, eq_, raises
+import pytest
 
 from flask import Flask
 from flask_superadmin import base
@@ -21,7 +21,7 @@ class MockView(base.BaseView):
         if self.allow_call:
             return super(MockView, self)._handle_view(name, **kwargs)
         else:
-            return 'Failure!'
+            return b'Failure!'
 
     def is_accessible(self):
         if self.allow_access:
@@ -32,44 +32,44 @@ class MockView(base.BaseView):
 
 def test_baseview_defaults():
     view = MockView()
-    eq_(view.name, None)
-    eq_(view.category, None)
-    eq_(view.endpoint, None)
-    eq_(view.url, None)
-    eq_(view.static_folder, None)
-    eq_(view.admin, None)
-    eq_(view.blueprint, None)
+    assert view.name == None
+    assert view.category == None
+    assert view.endpoint == None
+    assert view.url == None
+    assert view.static_folder == None
+    assert view.admin == None
+    assert view.blueprint == None
 
 
 def test_base_defaults():
     admin = base.Admin()
-    eq_(admin.name, 'Admin')
-    eq_(admin.url, '/admin')
-    eq_(admin.app, None)
-    ok_(admin.index_view is not None)
+    assert admin.name == 'Admin'
+    assert admin.url == '/admin'
+    assert admin.app == None
+    assert admin.index_view is not None
 
     # Check if default view was added
-    eq_(len(admin._views), 1)
-    eq_(admin._views[0], admin.index_view)
+    assert len(admin._views) == 1
+    assert admin._views[0] == admin.index_view
 
 
 def test_base_registration():
     app = Flask(__name__)
     admin = base.Admin(app)
 
-    eq_(admin.app, app)
-    ok_(admin.index_view.blueprint is not None)
+    assert admin.app == app
+    assert admin.index_view.blueprint is not None
 
 
 def test_admin_customizations():
     app = Flask(__name__)
     admin = base.Admin(app, name='Test', url='/foobar')
-    eq_(admin.name, 'Test')
-    eq_(admin.url, '/foobar')
+    assert admin.name == 'Test'
+    assert admin.url == '/foobar'
 
     client = app.test_client()
     rv = client.get('/foobar/')
-    eq_(rv.status_code, 200)
+    assert rv.status_code == 200
 
 
 def test_baseview_registration():
@@ -79,35 +79,35 @@ def test_baseview_registration():
     bp = view.create_blueprint(admin)
 
     # Base properties
-    eq_(view.admin, admin)
-    ok_(view.blueprint is not None)
+    assert view.admin == admin
+    assert view.blueprint is not None
 
     # Calculated properties
-    eq_(view.endpoint, 'mockview')
-    eq_(view.url, '/admin/mockview')
-    eq_(view.name, 'Mock View')
+    assert view.endpoint == 'mockview'
+    assert view.url == '/admin/mockview'
+    assert view.name == 'Mock View'
 
     # Verify generated blueprint properties
-    eq_(bp.name, view.endpoint)
-    eq_(bp.url_prefix, view.url)
-    eq_(bp.template_folder, 'templates')
-    eq_(bp.static_folder, view.static_folder)
+    assert bp.name == view.endpoint
+    assert bp.url_prefix == view.url
+    assert bp.template_folder == 'templates'
+    assert bp.static_folder == view.static_folder
 
     # Verify customizations
     view = MockView(name='Test', endpoint='foobar')
     view.create_blueprint(base.Admin())
 
-    eq_(view.name, 'Test')
-    eq_(view.endpoint, 'foobar')
-    eq_(view.url, '/admin/foobar')
+    assert view.name == 'Test'
+    assert view.endpoint == 'foobar'
+    assert view.url == '/admin/foobar'
 
     view = MockView(url='test')
     view.create_blueprint(base.Admin())
-    eq_(view.url, '/admin/test')
+    assert view.url == '/admin/test'
 
     view = MockView(url='/test/test')
     view.create_blueprint(base.Admin())
-    eq_(view.url, '/test/test')
+    assert view.url == '/test/test'
 
 
 def test_baseview_urls():
@@ -117,10 +117,10 @@ def test_baseview_urls():
     view = MockView()
     admin.add_view(view)
 
-    eq_(len(view._urls), 2)
+    assert len(view._urls) == 2
 
 
-@raises(Exception)
+@pytest.mark.xfail(raises=Exception)
 def test_no_default():
     app = Flask(__name__)
     admin = base.Admin(app)
@@ -135,18 +135,18 @@ def test_call():
     client = app.test_client()
 
     rv = client.get('/admin/')
-    eq_(rv.status_code, 200)
+    assert rv.status_code == 200
 
     rv = client.get('/admin/mockview/')
-    eq_(rv.data, 'Success!')
+    assert rv.data == str.encode('Success!')
 
     rv = client.get('/admin/mockview/test/')
-    eq_(rv.data, 'Success!')
+    assert rv.data == str.encode('Success!')
 
     # Check authentication failure
     view.allow_call = False
     rv = client.get('/admin/mockview/')
-    eq_(rv.data, 'Failure!')
+    assert rv.data == b'Failure!'
 
 
 def test_permissions():
@@ -159,7 +159,7 @@ def test_permissions():
     view.allow_access = False
 
     rv = client.get('/admin/mockview/')
-    eq_(rv.status_code, 403)
+    assert rv.status_code == 403
 
 
 def test_submenu():
@@ -172,16 +172,16 @@ def test_submenu():
     view.allow_access = False
     admin.add_view(view)
 
-    ok_('Test' in admin._menu_categories)
-    eq_(len(admin._menu), 2)
-    eq_(admin._menu[1].name, 'Test')
-    eq_(len(admin._menu[1]._children), 2)
+    assert 'Test' in admin._menu_categories
+    assert len(admin._menu) == 2
+    assert admin._menu[1].name == 'Test'
+    assert len(admin._menu[1]._children) == 2
 
     # Categories don't have URLs and they're not accessible
-    eq_(admin._menu[1].get_url(), None)
-    eq_(admin._menu[1].is_accessible(), False)
+    assert admin._menu[1].get_url() == None
+    assert admin._menu[1].is_accessible() == False
 
-    eq_(len(admin._menu[1].get_children()), 1)
+    assert len(admin._menu[1].get_children()) == 1
 
 
 def test_delayed_init():
@@ -193,10 +193,10 @@ def test_delayed_init():
     client = app.test_client()
 
     rv = client.get('/admin/mockview/')
-    eq_(rv.data, 'Success!')
+    assert rv.data == str.encode('Success!')
 
 
-@raises(Exception)
+@pytest.mark.xfail(raises=Exception)
 def test_double_init():
     app = Flask(__name__)
     admin = base.Admin(app)

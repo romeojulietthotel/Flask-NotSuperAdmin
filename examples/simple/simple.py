@@ -1,6 +1,7 @@
-from flask import Flask, render_template
 
-from flask.ext import superadmin
+from flask_superadmin import Admin, BaseView, expose
+
+from flask import Flask, render_template
 
 
 # Create custom admin view
@@ -32,7 +33,7 @@ def index():
 
 if __name__ == '__main__':
     # Create admin interface
-    admin = superadmin.Admin()
+    admin = Admin()
     admin.add_view(MyAdminView(category='Test'))
     admin.add_view(AnotherAdminView(category='Test'))
     admin.init_app(app)

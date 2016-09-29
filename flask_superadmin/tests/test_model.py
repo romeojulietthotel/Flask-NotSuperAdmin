@@ -1,13 +1,10 @@
-from nose.tools import eq_, ok_
 
+import flask_wtf as wtf
 import wtforms
 
 from flask import Flask
-
 from flask_superadmin import Admin
 from flask_superadmin.model import base
-
-from flask.ext import wtf
 
 
 class Model(object):
@@ -129,56 +126,56 @@ def test_mockview():
     view = MockModelView(Model)
     admin.add_view(view)
 
-    eq_(view.model, Model)
+    assert view.model == Model
 
-    eq_(view.name, 'Model')
-    eq_(view.url, '/admin/model')
-    eq_(view.endpoint, 'model')
-    ok_(view.blueprint is not None)
+    assert view.name == 'Model'
+    assert view.url == '/admin/model'
+    assert view.endpoint == 'model'
+    assert view.blueprint is not None
 
     client = app.test_client()
 
     # Make model view requests
     rv = client.get('/admin/model/')
-    eq_(rv.status_code, 200)
+    assert rv.status_code == 200
 
     # Test model creation view
     rv = client.get('/admin/model/add/')
-    eq_(rv.status_code, 200)
+    assert rv.status_code == 200
 
     rv = client.post('/admin/model/add/',
                      data=dict(col1='test1', col2='test2', col3='test3'))
-    eq_(rv.status_code, 302)
-    eq_(len(view.created_models), 1)
+    assert rv.status_code == 302
+    assert len(view.created_models) == 1
 
     model = view.created_models.pop()
-    eq_(model.id, 3)
-    eq_(model.col1, 'test1')
-    eq_(model.col2, 'test2')
-    eq_(model.col3, 'test3')
+    assert model.id == 3
+    assert model.col1 == 'test1'
+    assert model.col2 == 'test2'
+    assert model.col3 == 'test3'
 
     # Try model edit view
     rv = client.get('/admin/model/3/')
-    eq_(rv.status_code, 200)
-    ok_('test1' in rv.data)
+    assert rv.status_code == 200
+    assert b'test1' in rv.data
 
     rv = client.post('/admin/model/3/',
                      data=dict(col1='test!', col2='test@', col3='test#'))
-    eq_(rv.status_code, 302)
-    eq_(len(view.updated_models), 1)
+    assert rv.status_code == 302
+    assert len(view.updated_models) == 1
 
     model = view.updated_models.pop()
-    eq_(model.col1, 'test!')
-    eq_(model.col2, 'test@')
-    eq_(model.col3, 'test#')
+    assert model.col1 == 'test!'
+    assert model.col2 == 'test@'
+    assert model.col3 == 'test#'
 
     rv = client.get('/admin/modelview/4/')
-    eq_(rv.status_code, 404)
+    assert rv.status_code == 404
 
     # Attempt to delete model
     rv = client.post('/admin/model/3/delete/', data=dict(confirm_delete=True))
-    eq_(rv.status_code, 302)
-    eq_(rv.headers['location'], 'http://localhost/admin/model/')
+    assert rv.status_code == 302
+    assert rv.headers['location'] == 'http://localhost/admin/model/'
 
 
 def test_permissions():
@@ -191,17 +188,17 @@ def test_permissions():
 
     view.can_create = False
     rv = client.get('/admin/model/add/')
-    eq_(rv.status_code, 403)
+    assert rv.status_code == 403
 
     view.can_edit = False
     rv = client.get('/admin/model/1/')
     # 200 resp, but readonly fields
-    eq_(rv.status_code, 200)
-    eq_(rv.data.count('<div class="readonly-value">'), 3)
+    assert rv.status_code == 200
+    assert rv.data.count(b'<div class="readonly-value">') == 3
 
     view.can_delete = False
     rv = client.post('/admin/model/1/delete/')
-    eq_(rv.status_code, 403)
+    assert rv.status_code == 403
 
 
 def test_permissions_and_add_delete_buttons():
@@ -213,37 +210,37 @@ def test_permissions_and_add_delete_buttons():
     client = app.test_client()
 
     resp = client.get('/admin/model/')
-    eq_(resp.status_code, 200)
-    ok_('Add Model' in resp.data)
+    assert resp.status_code == 200
+    assert b'Add Model' in resp.data
 
     view.can_create = False
     resp = client.get('/admin/model/')
-    eq_(resp.status_code, 200)
-    ok_('Add Model' not in resp.data)
+    assert resp.status_code == 200
+    assert b'Add Model' not in resp.data
 
     view.can_edit = False
     view.can_delete = False
     resp = client.get('/admin/model/1/')
-    eq_(resp.status_code, 200)
-    ok_('Submit' not in resp.data)
-    ok_('Save and stay on page' not in resp.data)
-    ok_('Delete' not in resp.data)
+    assert resp.status_code == 200
+    assert b'Submit' not in resp.data
+    assert b'Save and stay on page' not in resp.data
+    assert b'Delete' not in resp.data
 
     view.can_edit = False
     view.can_delete = True
     resp = client.get('/admin/model/1/')
-    eq_(resp.status_code, 200)
-    ok_('Submit' not in resp.data)
-    ok_('Save and stay on page' not in resp.data)
-    ok_('Delete' in resp.data)
+    assert resp.status_code == 200
+    assert b'Submit' not in resp.data
+    assert b'Save and stay on page' not in resp.data
+    assert b'Delete' in resp.data
 
     view.can_edit = True
     view.can_delete = False
     resp = client.get('/admin/model/1/')
-    eq_(resp.status_code, 200)
-    ok_('Submit' in resp.data)
-    ok_('Save and stay on page' in resp.data)
-    ok_('Delete' not in resp.data)
+    assert resp.status_code == 200
+    assert b'Submit' in resp.data
+    assert b'Save and stay on page' in resp.data
+    assert b'Delete' not in resp.data
 
 
 def test_templates():
@@ -259,13 +256,13 @@ def test_templates():
     view.edit_template = 'mock.html'
 
     rv = client.get('/admin/model/')
-    eq_(rv.data, 'Success!')
+    assert rv.data == str.encode('Success!')
 
     rv = client.get('/admin/model/add/')
-    eq_(rv.data, 'Success!')
+    assert rv.data == str.encode('Success!')
 
     rv = client.get('/admin/model/1/')
-    eq_(rv.data, 'Success!')
+    assert rv.data == str.encode('Success!')
 
 
 def test_list_display_header():
@@ -274,12 +271,12 @@ def test_list_display_header():
     view = MockModelView(Model, list_display=['test_header'])
     admin.add_view(view)
 
-    eq_(len(view.list_display), 1)
+    assert len(view.list_display) == 1
 
     client = app.test_client()
 
     rv = client.get('/admin/model/')
-    ok_('Test Header' in rv.data)
+    assert b'Test Header' in rv.data
 
 
 def test_search_fields():
@@ -288,10 +285,10 @@ def test_search_fields():
     view = MockModelView(Model, search_fields=['col1', 'col2'])
     admin.add_view(view)
 
-    eq_(view.search_fields, ['col1', 'col2'])
+    assert view.search_fields, ['col1' == 'col2']
 
     client = app.test_client()
 
     rv = client.get('/admin/model/')
-    ok_('<div class="search">' in rv.data)
+    assert b'<div class="search">' in rv.data
 

@@ -1,7 +1,10 @@
+import flask_superadmin
+import flask_login
+import flask_ wtf
+
+
 from flask import Flask, url_for, redirect, render_template, request
 from flask_sqlalchemy import SQLAlchemy
-
-from flask.ext import superadmin, login, wtf
 from flask_superadmin.contrib import sqlamodel
 from wtforms.fields import StringField, PasswordField
 from wtforms.validators import Required, ValidationError

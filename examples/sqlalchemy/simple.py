@@ -1,7 +1,8 @@
+
+import flask_wtf as wtf
+
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
-
-from flask.ext import wtf
 from flask_superadmin import Admin, model
 
 # Create application

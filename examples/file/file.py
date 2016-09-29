@@ -3,7 +3,7 @@ import os.path as op
 
 from flask import Flask
 
-from flask.ext import superadmin
+from flask_superadmin Admin 
 from flask_superadmin.contrib import fileadmin
 
 
@@ -29,7 +29,7 @@ if __name__ == '__main__':
         pass
 
     # Create admin interface
-    admin = superadmin.Admin(app)
+    admin = Admin(app)
     admin.add_view(fileadmin.FileAdmin(path, '/files/', name='Files'))
 
     # Start app
