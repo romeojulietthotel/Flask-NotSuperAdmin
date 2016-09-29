@@ -1,15 +1,8 @@
 Flask-SuperAdmin
 ================
 
-.. image:: https://badges.gitter.im/Join%20Chat.svg
-   :alt: Join the chat at https://gitter.im/syrusakbary/Flask-SuperAdmin
-   :target: https://gitter.im/syrusakbary/Flask-SuperAdmin?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge
-
-
-.. image:: https://travis-ci.org/SyrusAkbary/Flask-SuperAdmin.png?branch=master
-        :target: https://travis-ci.org/SyrusAkbary/Flask-SuperAdmin
-
-Flask-Superadmin is the **best** admin interface framework for `Flask <http://flask.pocoo.org/>`_. As good as Django admin.
+Flask-Superadmin is an admin interface framework for `Flask <http://flask.pocoo.org/>`_.
+As good as Django admin.
 
 Batteries included:
 
@@ -30,13 +23,13 @@ Influenced heavily by the Django admin, **provides easy create/edit/delete funct
 project's models (MongoEngine, Django or SQLAlchemy).
 
 
-.. image:: https://raw.github.com/SyrusAkbary/Flask-SuperAdmin/master/screenshots/model-list.png
+.. image:: https://raw.github.com/romeojuliett/Flask-SuperAdmin/master/screenshots/model-list.png
     :width: 480px
-    :target: https://raw.github.com/SyrusAkbary/Flask-SuperAdmin/master/screenshots/model-list.png
+    :target: https://raw.github.com/romeojulietthotel/Flask-SuperAdmin/master/screenshots/model-list.png
 
-.. image:: https://raw.github.com/SyrusAkbary/Flask-SuperAdmin/master/screenshots/model-edit.png
+.. image:: https://raw.github.com/romeojuliett/Flask-SuperAdmin/master/screenshots/model-edit.png
     :width: 480px
-    :target: https://raw.github.com/SyrusAkbary/Flask-SuperAdmin/master/screenshots/model-edit.png
+    :target: https://raw.github.com/romeojulietthotel/Flask-SuperAdmin/master/screenshots/model-edit.png
 
 
 Introduction
@@ -87,24 +80,27 @@ Or::
 Examples
 --------
 
-Library comes with a lot of examples, you can find them in `examples <https://github.com/SyrusAkbary/Flask-SuperAdmin/tree/master/examples/>`_ directory.
+Library comes with a lot of examples, you can find them in 
+`examples <https://github.com/SyrusAkbary/Flask-SuperAdmin/tree/master/examples/>`_
+directory.
 
-- `MongoEngine <https://github.com/SyrusAkbary/Flask-SuperAdmin/tree/master/examples/mongoengine>`_
-- `SQLAlchemy <https://github.com/SyrusAkbary/Flask-SuperAdmin/tree/master/examples/sqlalchemy>`_
-- `Django <https://github.com/SyrusAkbary/Flask-SuperAdmin/tree/master/examples/django>`_
-- `Flask-Login integration <https://github.com/SyrusAkbary/Flask-SuperAdmin/tree/master/examples/auth>`_
+- `MongoEngine <https://github.com/romeojuliett/Flask-SuperAdmin/tree/master/examples/mongoengine>`_
+- `SQLAlchemy <https://github.com/romeojulietthotel/Flask-SuperAdmin/tree/master/examples/sqlalchemy>`_
+- `Django <https://github.com/romeojulietthotel/Flask-SuperAdmin/tree/master/examples/django>`_
+- `Flask-Login integration <https://github.com/romejulietthotel/Flask-SuperAdmin/tree/master/examples/auth>`_
 
 
 Documentation
 -------------
 
-Flask-SuperAdmin is extensively documented, you can find `documentation here <http://flask-superadmin.readthedocs.org/>`_.
+Flask-SuperAdmin `documentation is here <http://flask-superadmin.readthedocs.org/>`_.
 
 
 3rd Party Stuff
 ---------------
 
-Flask-SuperAdmin is built with help of `Twitter Bootstrap <http://twitter.github.com/bootstrap/>`_, `Chosen <http://harvesthq.github.com/chosen/>`_, and `jQuery <http://jquery.com/>`_.
+Flask-SuperAdmin uses `Twitter Bootstrap <http://twitter.github.com/bootstrap/>`_,
+`Chosen <http://harvesthq.github.com/chosen/>`_, and `jQuery <http://jquery.com/>`_.
 
 
 Kudos
